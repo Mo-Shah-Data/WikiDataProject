@@ -1,16 +1,36 @@
-# This is a sample Python script.
-# Test
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+from urllib.request import urlretrieve
+
+id_q = 'Q42'
+url = 'https://www.wikidata.org/wiki/Special:EntityData/{}.json'.format(id_q)
+filename = '{}.json'.format(id_q)
+
+urlretrieve(url, filename)
+
+import json
+import os
+
+id_q = 'Q42'
+json_file = id_q + ".json"
+with open(json_file, "r+") as f:
+    data = json.load(f)
+    # Entities
+    entity_item = id_q
+    # Labels
+    labels_and_entities=[]
+    print(data["entities"][entity_item]["labels"],id_q)
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
 
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+    # entities = data.get("entities")
+    # json.dump(data,f,indent=2)
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+#print(data)
+print(entities)
+print(json.dumps(data,indent=2))
+
+# the json file where the output must be stored
+out_file = open("test.json", "w")
+json.dump(data, out_file, indent=2)
+out_file.close()
+

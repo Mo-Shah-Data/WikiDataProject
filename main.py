@@ -14,13 +14,43 @@ urlretrieve(url, filename)
 import json
 import os
 
-entities = []
+
 id_q = 'Q42'
 json_file = id_q + ".json"
+
+entities = []
+labels = []
+claims_list = []
+
 with open(json_file, "r+") as f:
-    data = json.load(f)
+    data = json.load(f) # creates dict of length 1
     # print(data["entities"])
+    # what data structure is data?
+    ## Answer = dict
     key_list = list(data.keys())
+    if key_list[0] == "entities":
+        #print(True) # to remove
+        for entity in data:
+            #print(entity)
+            for sub_item_1 in data["entities"]:
+                if sub_item_1.startswith("Q"):
+                    # print(sub_item_1)
+                    entities.append(sub_item_1)
+                    for sub_item_2 in data["entities"][sub_item_1]:
+                        # print(sub_item_2) # check nest dict values
+                        if sub_item_2 == "labels":
+                            for label in data["entities"][sub_item_1][sub_item_2]:
+                                labels.append(label)
+                            # print(data["entities"][sub_item_1][sub_item_2]) # to uncomment, as it is required
+                            # print(sub_item_2)
+                        if sub_item_2 == "claims":
+                            # print(data["entities"][sub_item_1][sub_item_2])
+                            for claims_q in data["entities"][sub_item_1][sub_item_2]:
+                                if claims_q.startswith("P"):
+                                    claims_list.append(claims_q)
+                                    # print(claims_q)
+
+# Task 3 - Sort Claims with mainsnak.datavalue.
 
     # Testing to here
 

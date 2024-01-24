@@ -51,6 +51,33 @@ with open(json_file, "r+") as f:
                                     # print(claims_q)
 
 # Task 3 - Sort Claims with mainsnak.datavalue.
+# Make sure file is already loaded
+# def sort_dict(dict):
+#     return False
+
+# claim numbers for testing
+
+for key in data["entities"]["Q42"]["claims"]:
+    print(key)
+
+
+for key in data["entities"]["Q42"]["claims"]["P11182"][0]["mainsnak"]["datavalue"]["value"]:
+    print(key)
+
+# search in mainsnak
+for key in data["entities"]["Q42"]["claims"]["P11182"][0]["mainsnak"]["datavalue"]["value"].keys():
+    if key == "numeric-id":
+        if data["entities"]["Q42"]["claims"]["P11182"][0]["mainsnak"]["datavalue"]["value"]:
+            print(data["entities"]["Q42"]["claims"]["P11182"][0]["mainsnak"]["datavalue"]["value"]["numeric-id"])
+
+
+# search in others - to ask AR
+
+for key in data["entities"]["Q42"]["claims"]["P69"][0]["references"]:
+    print(key)
+
+
+
 
     # Testing to here
 

@@ -38,6 +38,10 @@ for k, v in data.items():
                         continue
 
 
+for k,v in claims.items():
+    print(k, v)
+
+
 
 
 

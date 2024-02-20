@@ -47,6 +47,13 @@ for k,v in labels.items():
 
 # Task 3 -0 because not all of the claims had mainsnak.datavalue
 ### itemgetter did not work, cannot get to nested dict keys
+##Testing pprint
+import pprint
+
+pp = pprint.PrettyPrinter(indent=2)
+pp.pprint(claims)
+##
+
 from operator import itemgetter
 
 print(type(claims)) # confirm structure
@@ -94,7 +101,12 @@ for k,v in claims.items():
         else:
             continue
 
-claims_list_sorted = sorted(zip(claims_list.values(),claims_list.keys()))
+claims_list_sorted = sorted(zip(claims_list.values(),claims_list.keys())
+
+import pprint
+
+pp = pprint.PrettyPrinter(indent=2)
+pp.pprint(claims_list_sorted)
 
 # Task 4 - Provide a search functionality which X matched value,
 # search will look into datavalue.value and datavalue.datatype.

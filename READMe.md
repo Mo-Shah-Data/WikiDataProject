@@ -21,3 +21,16 @@ What are hashable items?
 Lambda functions basics - to learn
 
 
+
+Next Session:
+
+https://docs.python.org/3/library/argparse.html
+1- JSON Path
+2- Parsing for different claims based on Type.
+import pprint
+stuff = ['spam', 'eggs', 'lumberjack', 'knights', 'ni']
+stuff.insert(0, stuff[:])
+pp = pprint.PrettyPrinter(indent=4)
+pp.pprint(stuff)
+
+

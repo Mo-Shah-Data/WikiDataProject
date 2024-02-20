@@ -133,6 +133,12 @@ for k,v in claims.items():
 min_value = min(zip(claims_list.values(), claims_list.keys()))
 max_value = max(zip(claims_list.values(), claims_list.keys()))
 
+# Task 6 - if two QID provied for the script,
+# download both JSON from Wiki API and
+# show Common pvalues,
+# diff pvalues,
+# common values for the same key. print these side by side
+
 
 
 

@@ -158,3 +158,11 @@ level1 = {key:value for key, value in data.items() for key in value}
 # # Make a dictionary of tech stocks
 # tech_names = {'AAPL', 'IBM', 'HPQ', 'MSFT'}
 # p2 = {key: value for key, value in prices.items() if key in tech_names}
+
+import pprint
+stuff = ['spam', 'eggs', 'lumberjack', 'knights', 'ni']
+stuff.insert(0, stuff[:])
+pp = pprint.PrettyPrinter(indent=2)
+pp.pprint(stuff)
+
+pp.pprint(data)

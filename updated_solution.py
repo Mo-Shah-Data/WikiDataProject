@@ -75,6 +75,7 @@ def search(search_pattern):
                 continue
 
 list_of_found_terms = []
+
 search("wiki")
 
 # 5- if datavalue.value is number, print the min and max for that property value.
@@ -106,13 +107,21 @@ pp.pprint(sequence_dicts)
 from operator import itemgetter
 from itertools import groupby
 
-sequence_dicts.sort(key=itemgetter("claim_number")) #  sorts only limite characters and needs fixing
+sequence_dicts.sort(key=itemgetter("claim_number")) #  sorts only limited characters and needs fixing
+
 
 #iterate in groups
 for claim_num, items in groupby(sequence_dicts, key=itemgetter('claim_number')):
     print(claim_num)
-    for i in items:
-        print('  ',i)
+    #pp.pprint(list(items))
+    # for i in items:
+    #     print(i)
+    item_values=list(items)
+    min_value = min(item_values, key=itemgetter('numeric_id'))
+    print(min_value)
+    max_value = max(item_values, key=itemgetter('numeric_id'))
+    print(max_value)
+
 
 import pprint
 pp = pprint.PrettyPrinter(indent=2)

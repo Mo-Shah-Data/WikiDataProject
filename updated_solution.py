@@ -20,66 +20,44 @@ json_file = id_q + ".json"
 with open(json_file, "r+") as f:
     data = json.load(f)
 
-for k,v in data.items():   # Did I even need a for loop?
+for k,v in data.items():
     Q = list(v.keys())[0]
-        if data[k][Q]["labels"]:
-            labels = data[k][Q]["labels"]
-        elif data[k][Q]["claims"]:
-            claims = data[k][Q]["claims"]
-        else:
-            continue
+    if data[k][Q]["labels"]:
+        labels = data[k][Q]["labels"]
+    if data[k][Q]["claims"]:
+        claims = data[k][Q]["claims"]
 
 
 # Task 3
 # Sort Claims with mainsnak.datavalue.
 # extract claims and mainsak.datavalue
 
-from operator import itemgetter
-
+#This solution was improved further down in task 5
 from collections import defaultdict
-
+from datetime import datetime
 
 claims_by_numeric_id = defaultdict(list)
+claims_by_time = defaultdict(list)
 
 for k,v in claims.items():
     for i in v:
-        #print(i)
-        if not i["mainsnak"]["datavalue"]["type"] == "time": # there are more nested dicts under here with numeric-ids work on this later
-            #print(i["mainsnak"]["datavalue"]["value"])
-            claims_by_numeric_id[k].append(i["mainsnak"]["datavalue"]["value"])
+        if i["mainsnak"]["datavalue"]["type"] == "wikibase-entityid":  # there are more nested dicts under here with numeric-ids work on this later
+            # print(i["mainsnak"]["datavalue"]["value"])
+            claims_by_numeric_id[k].append(i["mainsnak"]["datavalue"]["value"]["numeric-id"])
+            # need to get values from nested dicts now
 
         elif i["mainsnak"]["datavalue"]["type"] == "time":
-            #print(i["mainsnak"]["datavalue"]["value"]["time"])
-            claims_by_numeric_id[k].append(i["mainsnak"]["datavalue"]["value"]["time"]) # may need to use a different dict
+            # print(i["mainsnak"]["datavalue"]["value"]["time"])
+            datetime_string = i["mainsnak"]["datavalue"]["value"]["time"]
+            adjusted_datetime_string = datetime_string[1:]
+            date_format = '%Y-%m-%dT%H:%M:%SZ'
+            date_datetime = datetime.strptime(adjusted_datetime_string, date_format)
+            claims_by_time[k].append(date_datetime)  # may need to use a different dict
+        else:
+            continue
 
-        # need to get valeus from nested dicts now
-
-
-
-
-
-
-
-
-
-
-
-
-            claims_by_numeric_id[k].append(i["mainsnak"]["datavalue"]["value"]["numeric-id"])
-
-# sort the default dict
-            for each_value in claims_by_numeric_id.items():
-                print(each_value)
-
-                    each_value[1].sort()
-
-claims_by_numberic_id_sorted = sorted(claims_by_numeric_id)
-
-
-import array as arr
-# Create an array of integer type
-my_array = arr.array('u', ['1', '2', '3', '4', '5'])
-
+sort_by_numeric_id_vals = sorted(claims_by_numeric_id.items(), key=lambda item_value: item_value[1])
+sorted_by_datetime_vals = sorted(claims_by_time.items(), key=lambda item_value: item_value[1])
 
 
 # 4- Provide a search funcationlity which X matched value, search will look into datavalue.value and datavalue.datatype.
@@ -101,3 +79,41 @@ search("wiki")
 
 # 5- if datavalue.value is number, print the min and max for that property value.
 # if groupby option is provided, groupby will work on P???.datatype .
+
+sequence_dicts = []
+
+#### I did not know you can have duplicate dicts in a  sequence of dictionaries
+for k,v in claims.items():
+    for i in v:
+        if i["mainsnak"]["datavalue"]["type"] == "wikibase-entityid":  # there are more nested dicts under here with numeric-ids work on this later
+            #print(i["mainsnak"]["datavalue"]["value"])
+            row_dict = {
+                "claim_number": k,
+                "numeric_id": i["mainsnak"]["datavalue"]["value"]["numeric-id"]
+            }
+            sequence_dicts.append(row_dict)
+            # need to get values from nested dicts now
+
+        else:
+            continue
+
+import pprint
+pp = pprint.PrettyPrinter(indent=2)
+pp.pprint(sequence_dicts)
+
+# claim 106 will help test the grouping
+
+from operator import itemgetter
+from itertools import groupby
+
+sequence_dicts.sort(key=itemgetter("claim_number")) #  sorts only limite characters and needs fixing
+
+#iterate in groups
+for claim_num, items in groupby(sequence_dicts, key=itemgetter('claim_number')):
+    print(claim_num)
+    for i in items:
+        print('  ',i)
+
+import pprint
+pp = pprint.PrettyPrinter(indent=2)
+pp.pprint(sequence_dicts)

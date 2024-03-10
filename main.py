@@ -77,13 +77,13 @@ def sort_claims(claims):
     return sorted_claims_by_numeric_id_vals
 
 def search(search_pattern,QID, claims):
-    search_pattern = search_pattern.lower()
+    search_pattern_lower = search_pattern.lower()
     list_of_found_terms = []
     for k, v in claims.items():
         for i in v:
-            if search_pattern in str(i["mainsnak"]["datavalue"]["value"]).lower():
+            if search_pattern_lower in str(i["mainsnak"]["datavalue"]["value"]).lower():
                 list_of_found_terms.append(i["mainsnak"]["datavalue"]["value"])
-            elif search_pattern in str(i["mainsnak"]["datavalue"]["type"]).lower():
+            elif search_pattern_lower in str(i["mainsnak"]["datavalue"]["type"]).lower():
                 list_of_found_terms.append(i["mainsnak"]["datavalue"]["type"])
             else:
                 continue
@@ -152,13 +152,15 @@ def main():
 
     # preprocess file or files
     claims_QID1 = preprocess_file(args.QID1)
-    list_of_tems_found_QID1 = search(args.search_term,args.QID1,claims_QID1)
+    if args.search_term:
+        list_of_terms_found_QID1 = search(args.search_term,args.QID1,claims_QID1)
     print_min_max(args.QID1,claims_QID1)
     sort_claims(claims_QID1)
 
     if args.QID2:
         claims_QID2 = preprocess_file(args.QID2)
-        list_of_tems_found_QID2 = search(args.search_term, args.QID2,claims_QID2)
+        if args.search_term:
+            list_of_terms_found_QID2 = search(args.search_term, args.QID2,claims_QID2)
         print_min_max(args.QID2, claims_QID2)
         sort_claims(claims_QID2)
 
